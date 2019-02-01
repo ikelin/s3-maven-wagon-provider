@@ -40,9 +40,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @RunWith(MockitoJUnitRunner.class)
 public class S3WagonTest {
 
-  @Spy
-  private S3Wagon s3Wagon;
-
   @Mock
   private AmazonS3 amazonS3;
 
@@ -56,6 +53,7 @@ public class S3WagonTest {
   private Resource resource;
 
   private ConcurrentHashMap<Upload, OutputStream> uploads;
+  private S3Wagon s3Wagon;
   private long contentLength;
   private String bucket;
   private String key;
