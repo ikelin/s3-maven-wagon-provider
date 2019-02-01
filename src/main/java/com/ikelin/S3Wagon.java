@@ -43,7 +43,7 @@ public class S3Wagon extends StreamWagon {
    * Creates a S3 Wagon using default {@code AmazonS3} and default {@code TransferManager}.
    */
   public S3Wagon() {
-    this(null, null, new ConcurrentHashMap<>());
+    this(AmazonS3ClientBuilder.defaultClient(), TransferManagerBuilder.defaultTransferManager(), new ConcurrentHashMap<>());
   }
 
   /**
@@ -59,8 +59,8 @@ public class S3Wagon extends StreamWagon {
       final ConcurrentHashMap<Upload, OutputStream> uploads) {
     super();
 
-    this.amazonS3 = amazonS3 == null ? AmazonS3ClientBuilder.defaultClient() : amazonS3;
-    this.transferManager = transferManager == null ? TransferManagerBuilder.defaultTransferManager() : transferManager;
+    this.amazonS3 = amazonS3;
+    this.transferManager = transferManager;
     this.uploads = uploads;
   }
 
