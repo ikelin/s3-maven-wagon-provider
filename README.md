@@ -5,6 +5,7 @@ An Apache Maven Wagon provider for Amazon S3 that deploys artifacts to S3 bucket
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikelin/s3-maven-wagon-provider/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ikelin/s3-maven-wagon-provider)
 [![Build Status](https://travis-ci.org/ikelin/s3-maven-wagon-provider.svg?branch=master)](https://travis-ci.org/ikelin/s3-maven-wagon-provider)
 [![Coverage Status](https://coveralls.io/repos/github/ikelin/s3-maven-wagon-provider/badge.svg?branch=master)](https://coveralls.io/github/ikelin/s3-maven-wagon-provider?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c8cf3d856e754503b5f4ef53be95cfd9)](https://www.codacy.com/app/ikelin/s3-maven-wagon-provider?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ikelin/s3-maven-wagon-provider&amp;utm_campaign=Badge_Grade)
 
 ## Usage
 

@@ -1,6 +1,7 @@
 package com.ikelin;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -22,12 +23,12 @@ import org.apache.maven.wagon.ResourceDoesNotExistException;
 import org.apache.maven.wagon.TransferFailedException;
 import org.apache.maven.wagon.repository.Repository;
 import org.apache.maven.wagon.resource.Resource;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -36,8 +37,8 @@ import java.io.PipedOutputStream;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
-@RunWith(MockitoJUnitRunner.class)
-public class S3WagonTest {
+@ExtendWith(MockitoExtension.class)
+class S3WagonTest {
 
   private S3Wagon s3Wagon;
 
@@ -58,8 +59,8 @@ public class S3WagonTest {
   private String bucket;
   private String key;
 
-  @Before
-  public void before() {
+  @BeforeEach
+  public void beforeEach() {
     uploads = new ConcurrentHashMap<>();
 
     s3Wagon = spy(new S3Wagon(amazonS3, transferManager, uploads));
@@ -69,7 +70,6 @@ public class S3WagonTest {
     doReturn("key").when(resource).getName();
 
     contentLength = 1024L;
-    doReturn(contentLength).when(resource).getContentLength();
 
     bucket = "bucket";
     doReturn(bucket).when(repository).getHost();
@@ -78,20 +78,19 @@ public class S3WagonTest {
     key = "path/to/key";
   }
 
-  @Test(expected = ResourceDoesNotExistException.class)
-  public void givenFillInputData_whenS3ObjectDoesNotExist_thenThrowResourceDoesNotExistException()
-      throws ResourceDoesNotExistException {
+  @Test
+  public void testS3ObjectDoesNotExist() {
     InputData inputData = mock(InputData.class);
     doReturn(resource).when(inputData).getResource();
 
     doReturn(false).when(amazonS3).doesObjectExist(bucket, key);
 
     s3Wagon.openConnectionInternal();
-    s3Wagon.fillInputData(inputData);
+    assertThrows(ResourceDoesNotExistException.class, () -> s3Wagon.fillInputData(inputData));
   }
 
   @Test
-  public void givenFillInputData_whenS3ObectExists_thenInputStreamIsFilled()
+  public void testFillInputData()
       throws ResourceDoesNotExistException {
     InputData inputData = mock(InputData.class);
     doReturn(resource).when(inputData).getResource();
@@ -122,8 +121,10 @@ public class S3WagonTest {
   }
 
   @Test
-  public void givenFillOutputData_whenOutputStreamIsValid_thenOutputStreamIsFilled()
+  public void testFillOutputData()
       throws TransferFailedException {
+    doReturn(contentLength).when(resource).getContentLength();
+
     OutputData outputData = mock(OutputData.class);
     doReturn(resource).when(outputData).getResource();
 
@@ -147,8 +148,10 @@ public class S3WagonTest {
   }
 
   @Test
-  public void testFillOutputDataCloseConnection()
+  public void testFillOutputDataThrowsCloseConnection()
       throws TransferFailedException, ConnectionException, InterruptedException {
+    doReturn(contentLength).when(resource).getContentLength();
+
     OutputData outputData = mock(OutputData.class);
     doReturn(resource).when(outputData).getResource();
 
@@ -169,8 +172,10 @@ public class S3WagonTest {
   }
 
   @Test
-  public void givenCloseConnection_whenUploadInterruptedException_thenContinue()
+  public void testCloseConnectionThrowsUploadInterruptedException()
       throws TransferFailedException, ConnectionException, InterruptedException {
+    doReturn(contentLength).when(resource).getContentLength();
+
     OutputData outputData = mock(OutputData.class);
     doReturn(resource).when(outputData).getResource();
 
@@ -189,9 +194,11 @@ public class S3WagonTest {
     assertEquals(0, uploads.size());
   }
 
-  @Test(expected = ConnectionException.class)
-  public void givenCloseConnection_whenOutputStreamThrowsIOException_thenThrowsConnectionException()
-      throws TransferFailedException, ConnectionException, IOException {
+  @Test
+  public void testCloseConnectionThrowsOutputStreamThrowsIOException()
+      throws TransferFailedException, IOException {
+    doReturn(contentLength).when(resource).getContentLength();
+
     OutputData outputData = mock(OutputData.class);
     doReturn(resource).when(outputData).getResource();
 
@@ -205,7 +212,7 @@ public class S3WagonTest {
     doThrow(IOException.class).when(outputStream).close();
     uploads.put(upload, outputStream);
 
-    s3Wagon.closeConnection();
+    assertThrows(ConnectionException.class, () -> s3Wagon.closeConnection());
   }
 
 }
