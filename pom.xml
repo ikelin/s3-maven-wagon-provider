@@ -6,7 +6,7 @@
 
   <groupId>com.ikelin</groupId>
   <artifactId>s3-maven-wagon-provider</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
