@@ -1,6 +1,6 @@
 # S3 Maven Wagon Provider
 
-An Apache Maven Wagon provider for Amazon S3 that deploys artifacts to S3 bucket.
+A Maven Wagon Provider for Amazon S3 Extension that hosts artifacts on S3 bucket.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikelin/s3-maven-wagon-provider/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ikelin/s3-maven-wagon-provider)
 [![Build Status](https://travis-ci.org/ikelin/s3-maven-wagon-provider.svg?branch=master)](https://travis-ci.org/ikelin/s3-maven-wagon-provider)
@@ -9,7 +9,7 @@ An Apache Maven Wagon provider for Amazon S3 that deploys artifacts to S3 bucket
 
 ## Usage
 
-Maven
+Maven `pom.xml`:
 
 ```xml
 <build>
@@ -22,6 +22,7 @@ Maven
   </extensions>
 </build>
 
+<!-- deploys artifacts to S3 -->
 <distributionManagement>
   <snapshotRepository>
     <id>aws-s3-snapshot</id>
@@ -29,11 +30,39 @@ Maven
     <url>s3://{BUCKET}/snapshot</url>
   </snapshotRepository>
   <repository>
-      <id>aws-s3-release</id>
-      <name>AWS S3 Release Repository</name>
-      <url>s3://{BUCKET}/release</url>
-    </repository>
+    <id>aws-s3-release</id>
+    <name>AWS S3 Release Repository</name>
+    <url>s3://{BUCKET}/release</url>
+  </repository>
 </distributionManagement>
+
+<!-- downloads artifacts from S3 -->
+<repositories>
+  <repository>
+    <id>aws-s3-snapshot</id>
+    <url>s3://{BUCKET}/snapshot</url>
+    <snapshots>
+      <enabled>true</enabled>
+      <updatePolicy>always</updatePolicy>
+      <checksumPolicy>warn</checksumPolicy>
+    </snapshots>
+    <releases>
+      <enabled>false</enabled>
+    </releases>
+  </repository>
+  <repository>
+    <id>aws-s3-release</id>
+    <url>s3://{BUCKET}/release</url>
+    <snapshots>
+      <enabled>false</enabled>
+    </snapshots>
+    <releases>
+      <enabled>true</enabled>
+      <updatePolicy>never</updatePolicy>
+      <checksumPolicy>fail</checksumPolicy>
+    </releases>
+  </repository>
+</repositories>
 
 ```
 
