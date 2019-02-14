@@ -1,6 +1,6 @@
 # S3 Maven Wagon Provider
 
-A Maven Wagon Provider for Amazon S3 Extension that hosts artifacts on S3 bucket.
+A Maven extension that hosts artifacts on Amazon S3.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ikelin/s3-maven-wagon-provider/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ikelin/s3-maven-wagon-provider)
 [![Build Status](https://travis-ci.org/ikelin/s3-maven-wagon-provider.svg?branch=master)](https://travis-ci.org/ikelin/s3-maven-wagon-provider)
