@@ -39,8 +39,8 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
-    <wagon-provider-api.version>3.3.1</wagon-provider-api.version>
-    <aws-java-sdk.version>1.11.497</aws-java-sdk.version>
+    <wagon-provider-api.version>3.5.2</wagon-provider-api.version>
+    <aws-java-sdk.version>1.12.262</aws-java-sdk.version>
     <slf4j.version>1.7.25</slf4j.version>
     <junit-jupiter-api.version>5.3.2</junit-jupiter-api.version>
     <mockito.version>2.23.4</mockito.version>
